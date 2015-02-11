@@ -1,0 +1,31 @@
+## Run dd in the background and save it's PID in the pid variable. Increase the bs if needed.
+## Replace the "source" and "destination" of course!
+
+dd if=source of=destination bs=4M & pid=$!
+
+## It should give you your shell back. When it does, run the code below.
+while ((pid)); do kill -USR1 "$pid" 2>/dev/null || break; sleep 5; done
+
+## OR
+until ((! pid)); do kill -USR1 "$pid" 2>/dev/null || break; sleep 5; done
+
+## The while/until loop check's if "$pid" is not empty, then run kill every 5 seconds.
+## Run 'dd --help | tail -n 19' for some info about the kill part.
+## Question: Why do i have to do that when i can install dd_rescue or pv so i can have some fancy output?
+## Answer: If your doing some rescue/saving your system using some limited tools, then good luck guessing when will it finish!
+## Other than that... just sit back, watch and enjoy!
+
+# Where source can be /dev/sd* or *iso
+# Destination ca be *.iso *.img etc.
+
+dd if=$1 of=$2 bs=4M & pid=$!
+
+Progdd(){
+  while ((pid)); do
+    kill -USR1 "$pid" 2>/dev/null || break
+    sleep 5
+  done
+}
+
+
+  

@@ -1,0 +1,20 @@
+My list of osc functions. I normally have these functions in "$HOME/.bashrc" or "$HOME/.alias"
+
+
+
+## Usage: getsource «packagename»
+## Packagename can be one ore more separated by spaces.
+
+getsource(){ 
+  
+  _getsource(){
+    input=$(rpm -q --qf "%{disturl}\n" "$@" ) 
+    osc co  "$input"
+  }
+  
+  for f; do 
+    _getsource "$f"
+  done
+}
+
+================================================
